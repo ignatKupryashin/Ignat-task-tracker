@@ -1,0 +1,6 @@
+<div>
+  <button (click)="addTask()">Добавить</button>
+  @for (task of tasks | async; track task) {
+    <app-task-item [task]="task"/>
+  }
+</div>
