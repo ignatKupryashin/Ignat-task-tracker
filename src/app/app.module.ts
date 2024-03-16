@@ -8,6 +8,8 @@ import {userReducer} from "./store/user/user.reducer";
 import {taskReducer} from "./store/task/task.reducer";
 import {DashboardComponent} from "./components/pages/dashboard/dashboard.component";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {MAT_DATE_FORMATS} from "@angular/material/core";
+import {MY_DATE_FORMATS} from "./helpers/date-format";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     DashboardComponent,
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+
   ],
   bootstrap: [AppComponent]
 })

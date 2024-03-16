@@ -5,6 +5,16 @@ import {AsyncPipe, DatePipe} from "@angular/common";
 import {TaskActions} from "../../../store/task/task.actions";
 import {Priority} from "../../../models/priority.model";
 import {TaskItemComponent} from "./task-item/task-item.component";
+import {MatButton, MatButtonModule} from '@angular/material/button';
+import {MatTooltip} from "@angular/material/tooltip";
+import {FormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatIconModule} from "@angular/material/icon";
+import {MatOption, MatSelect} from "@angular/material/select";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MAT_DATE_FORMATS, provideNativeDateAdapter} from "@angular/material/core";
+import {MY_DATE_FORMATS} from "../../../helpers/date-format";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,33 +22,57 @@ import {TaskItemComponent} from "./task-item/task-item.component";
   imports: [
     AsyncPipe,
     DatePipe,
-    TaskItemComponent
+    TaskItemComponent,
+    MatButton,
+    MatTooltip,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSelect,
+    MatOption,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatDatepickerInput
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
+  providers: [provideNativeDateAdapter(),
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS}
+   ],
 })
 export class DashboardComponent {
+  taskHeading: string = "";
+  taskPriority: Priority = Priority.MEDIUM;
+  taskBody: string = "";
+  taskDeadline: Date = new Date(Date.now());
 
-    tasks = this.store.select(selectTaskState);
+  tasks = this.store.select(selectTaskState);
 
-    constructor(
-      private store: Store
-    ){
-}
+  constructor(
+    private store: Store
+  ){
+  }
 
   addTask() {
     this.store.dispatch(TaskActions.addTask({
       task: {
         taskId: Date.now(),
-        heading: "Добавленная задача",
-        priority: Priority.MEDIUM,
-        body: "Новый заголовок",
+        heading: this.taskHeading,
+        priority: this.taskPriority,
+        body: this.taskBody,
         created: new Date(Date.now()),
-        deadline: new Date(Date.now() + 10000),
+        deadline: new Date(this.taskDeadline),
         status: "Not started",
         executorsId: []
       }
     }))
   }
 
+  submitButton() {
+    this.addTask();
+  }
+
+  protected readonly Priority = Priority;
 }

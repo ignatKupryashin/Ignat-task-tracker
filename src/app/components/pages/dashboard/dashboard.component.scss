@@ -1,0 +1,20 @@
+.dashboard-page {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+
+.create-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: #1c441a solid 2px;
+  border-radius: 8px;
+  width: 300px;
+  padding: 20px;
+}
+
+.task-list {
+  flex: 1;
+}

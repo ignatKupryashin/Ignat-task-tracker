@@ -1,6 +1,31 @@
-<div>
-  <button (click)="addTask()">Добавить</button>
-  @for (task of tasks | async; track task) {
-    <app-task-item [task]="task"/>
-  }
+<div class="dashboard-page">
+  <div class="create-task-form">
+    <mat-form-field>
+      <mat-label>Наименование задачи</mat-label>
+      <input matInput type="text" [(ngModel)]="taskHeading">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Опишите задачу</mat-label>
+      <textarea matInput [(ngModel)]="taskBody" placeholder="Текст задачи"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="taskDeadline">
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [(ngModel)]="taskPriority">
+        <mat-option [value]=Priority.LOW>Низкий</mat-option>
+        <mat-option [value]=Priority.MEDIUM>Средний</mat-option>
+        <mat-option [value]=Priority.HIGH>Высокий</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="submitButton()">Добавить</button>
+  </div>
+  <div class="task-list">
+    @for (task of tasks | async; track task) {
+      <app-task-item [task]="task"/>
+    }
+  </div>
 </div>
