@@ -15,6 +15,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MAT_DATE_FORMATS, provideNativeDateAdapter} from "@angular/material/core";
 import {MY_DATE_FORMATS} from "../../../helpers/date-format";
+import {selectUserState} from "../../../store/user/user.selector";
 
 @Component({
   selector: 'app-dashboard',
@@ -47,8 +48,10 @@ export class DashboardComponent {
   taskPriority: Priority = Priority.MEDIUM;
   taskBody: string = "";
   taskDeadline: Date = new Date(Date.now());
+  taskExecutors: number[] = [];
 
   tasks = this.store.select(selectTaskState);
+  users = this.store.select(selectUserState);
 
   constructor(
     private store: Store
@@ -65,7 +68,7 @@ export class DashboardComponent {
         created: new Date(Date.now()),
         deadline: new Date(this.taskDeadline),
         status: "Not started",
-        executorsId: []
+        executorsId: this.taskExecutors
       }
     }))
   }

@@ -11,7 +11,12 @@ export class UserService {
   constructor() { }
 
   getUsers(): User[] {
-    return USER_MOCKS;
+    const data = localStorage.getItem("users");
+    if (data !== null) {
+      return JSON.parse(data) as User[];
+    } else {
+      return USER_MOCKS;
+    }
   }
 
 }

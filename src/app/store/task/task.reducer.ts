@@ -16,9 +16,15 @@ export const taskReducer = createReducer(
 
   on(TaskActions.addTask, (state, {task}) => [...state, task]),
 
-  on(TaskActions.editTaskStatus, (state,  {taskId, status} ) => {
+  on(TaskActions.setStatus, (state,  {taskId, status} ) => {
     return state.map((task) =>
       task.taskId === taskId ? { ...task, status: status } : task
     );
   }),
+
+  on(TaskActions.setExecutors, (state, {taskId, executorsId}) =>
+    state.map((task) => task.taskId === taskId ? { ...task, executorsId: [...executorsId]} : task)
+  ),
+
+
 );

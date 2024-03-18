@@ -21,7 +21,14 @@
         <mat-option [value]=Priority.HIGH>Высокий</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="submitButton()">Добавить</button>
+    <mat-form-field>
+      <mat-select [(ngModel)]="taskExecutors" multiple>
+        @for (user of users | async; track user) {
+          <mat-option [value]=user.userId>{{user.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="submitButton()">Добавить</button>
   </div>
   <div class="task-list">
     @for (task of tasks | async; track task) {

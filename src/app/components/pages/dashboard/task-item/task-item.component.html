@@ -1,6 +1,28 @@
 <div class="task-item">
   <h1>{{ task.heading }}</h1>
   <p>{{ task.body }}</p>
-  <p>{{ task.status }}</p>
+
+
+
+  <mat-form-field>
+    <mat-select
+      [(ngModel)]="taskStatus" (selectionChange)="changeStatus()">
+      @for (status of statusList; track status) {
+        <mat-option [value]=status>{{status}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
   <p>created: {{ task.created | date }}</p>
+  <p>Дедлайн: {{ task.deadline | date }}</p>
+  <p>Приоритет : {{ task.priority | priority }}</p>
+
+  <mat-form-field>
+    <mat-select
+      [(ngModel)]="taskExecutors" (closed)="changeExecutors()" multiple>
+      @for (user of users | async; track user) {
+        <mat-option [value]=user.userId>{{user.name}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="deleteTask()">Удалить</button>
 </div>

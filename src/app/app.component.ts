@@ -5,6 +5,9 @@ import {TasksService} from "./services/tasks.service";
 import {UserService} from "./services/user.service";
 import {UserActions} from "./store/user/user.actions";
 import {TaskActions} from "./store/task/task.actions";
+import {selectUserState} from "./store/user/user.selector";
+import {selectTaskState} from "./store/task/task.selector";
+import {User} from "./models/user.model";
 
 
 @Component({
@@ -24,8 +27,27 @@ export class AppComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(UserActions.loadData({data: this.userService.getUsers()}))
-    this.store.dispatch(TaskActions.loadTasks({taskArray: this.taskService.getTasks()}))
+    this.store.dispatch(UserActions.loadData({data: this.userService.getUsers()}));
+    this.store.dispatch(TaskActions.loadTasks({taskArray: this.taskService.getTasks()}));
+    this.saveUsers();
+    this.saveTasks();
+  }
+
+
+  loadUsers() {
+
+  }
+
+  saveUsers() {
+    this.store.select(selectUserState).subscribe((data) => {
+      localStorage.setItem("users", JSON.stringify(data));
+    });
+  }
+
+  saveTasks() {
+    this.store.select(selectTaskState).subscribe((data) => {
+      localStorage.setItem("tasks", JSON.stringify(data));
+    });
   }
 
 }
