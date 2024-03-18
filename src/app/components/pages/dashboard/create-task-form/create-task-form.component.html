@@ -1,0 +1,33 @@
+<form [formGroup]="taskCreateForm" (submit)="submitButton()" class="create-task-form">
+  <mat-form-field>
+    <mat-label>Наименование задачи</mat-label>
+    <input matInput type="text" formControlName="heading">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Текст задачи</mat-label>
+    <textarea matInput formControlName="body" placeholder="Текст задачи"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Срок выполнения</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="deadline">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Приоритет</mat-label>
+    <mat-select formControlName="priority">
+      <mat-option [value]=Priority.LOW>Низкий</mat-option>
+      <mat-option [value]=Priority.MEDIUM>Средний</mat-option>
+      <mat-option [value]=Priority.HIGH>Высокий</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Исполнители</mat-label>
+    <mat-select formControlName="executorsId" multiple>
+      @for (user of users | async; track user) {
+        <mat-option [value]=user.userId>{{user.name}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <button [disabled]="taskCreateForm.invalid" mat-raised-button color="accent"  type="submit" (keydown.enter)="$event.preventDefault()">Добавить</button>
+</form>

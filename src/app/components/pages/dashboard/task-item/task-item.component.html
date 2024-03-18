@@ -1,4 +1,4 @@
-<div class="task-item">
+<div class="task-item" [ngClass]="{'done' : task.status === 'Done', 'in-progress' : taskStatus === 'In progress'}">
   <h1>{{ task.heading }}</h1>
   <p>{{ task.body }}</p>
 

@@ -1,37 +1,17 @@
 <div class="dashboard-page">
-  <div class="create-task-form">
-    <mat-form-field>
-      <mat-label>Наименование задачи</mat-label>
-      <input matInput type="text" [(ngModel)]="taskHeading">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Опишите задачу</mat-label>
-      <textarea matInput [(ngModel)]="taskBody" placeholder="Текст задачи"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="taskDeadline">
-      <mat-hint>DD/MM/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select [(ngModel)]="taskPriority">
-        <mat-option [value]=Priority.LOW>Низкий</mat-option>
-        <mat-option [value]=Priority.MEDIUM>Средний</mat-option>
-        <mat-option [value]=Priority.HIGH>Высокий</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select [(ngModel)]="taskExecutors" multiple>
-        @for (user of users | async; track user) {
-          <mat-option [value]=user.userId>{{user.name}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="accent" (click)="submitButton()">Добавить</button>
-  </div>
+  <app-create-task-form/>
   <div class="task-list">
-    @for (task of tasks | async; track task) {
+    <div>
+      <button (click)="sortOption.next('executors')">executors</button>
+      <button (click)="sortOption.next('status')">status</button>
+      <button (click)="sortOption.next('deadline')">deadline</button>
+      <button (click)="sortOption.next('')">Сбросить</button>
+      <button (click)="filterOptions.next(newfilt)">Не начатые</button>
+      <button (click)="filterOptions.next({})">Отбой</button>
+    </div>
+
+
+    @for (task of filteredAndSortedTasks; track task) {
       <app-task-item [task]="task"/>
     }
   </div>
