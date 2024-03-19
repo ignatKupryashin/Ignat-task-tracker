@@ -25,6 +25,7 @@ import {MatInput} from "@angular/material/input";
 import {MAT_DATE_FORMATS, provideNativeDateAdapter} from "@angular/material/core";
 import {MY_DATE_FORMATS} from "../../../helpers/date-format";
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {selectUserState} from "../../../store/user/user.selector";
 
 @Component({
   selector: 'app-dashboard',
@@ -57,12 +58,13 @@ import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
   styleUrl: './dashboard.component.scss',
   providers: [provideNativeDateAdapter(),
     {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
-    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}}
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { subscriptSizing: 'dynamic'}}
   ],
 })
 export class DashboardComponent implements OnInit {
 
   tasks$ = this.store.select(selectTaskState);
+  users$ = this.store.select(selectUserState);
   tasks: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>([]);
   filteredAndSortedTasks: Task[] = [];
   sortOption: BehaviorSubject<"status" | "executors" | "deadline" | ""> = new BehaviorSubject<"status" | "executors" | "deadline" | "">("");
@@ -70,8 +72,8 @@ export class DashboardComponent implements OnInit {
   currentSortOption: TaskSortOption = "";
   currentFilterDeadlineStart: Date | undefined = undefined;
   currentFilterDeadlineEnd: Date | undefined = undefined;
-
   currentStatusFilter: Status | undefined = undefined;
+  currentExecutorsFilter: number[] = [];
 
   sortTasks(tasks: Task[], sortOption: TaskSortOption): Task[] {
     switch (sortOption) {
@@ -128,9 +130,19 @@ export class DashboardComponent implements OnInit {
       deadline: {
         deadlineStart: this.currentFilterDeadlineStart,
         deadlineEnd: this.currentFilterDeadlineEnd
-      }
+      },
+      executors: this.currentExecutorsFilter.length > 0 ? [...this.currentExecutorsFilter] : undefined
     })
   }
+
+  clearFilter() {
+    this.currentFilterDeadlineStart = undefined;
+    this.currentFilterDeadlineEnd = undefined;
+    this.currentStatusFilter = undefined;
+    this.currentExecutorsFilter = [];
+    this.changeFilter();
+  }
+
 
   constructor(
     private store: Store
