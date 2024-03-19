@@ -54,7 +54,6 @@ export class TaskItemComponent implements OnInit {
   }
 
   changeExecutors() {
-    console.log(this.task.taskId);
     this.store.dispatch(TaskActions.setExecutors({taskId: this.task.taskId, executorsId: this.taskExecutors}))
   }
 
