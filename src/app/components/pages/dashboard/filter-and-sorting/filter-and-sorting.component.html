@@ -1,0 +1,45 @@
+<div class="sorting-block">
+  <h3>Сортировка</h3>
+  <div class="sorting-block__button-block">
+    <mat-button-toggle-group name="favoriteColor" [(ngModel)]="currentSortOption" (change)="changeSort()">
+      <mat-button-toggle value="">Нет сортировки ---</mat-button-toggle>
+      <mat-button-toggle value="executors">Исполнители</mat-button-toggle>
+      <mat-button-toggle value="status">Статус</mat-button-toggle>
+      <mat-button-toggle value="deadline">Дедлайн</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+<div class="filter-block">
+  <h3>Отбор</h3>
+  <div class="filter-block-selects">
+    <mat-form-field>
+      <mat-label>Статус</mat-label>
+      <mat-select [(value)]="currentStatusFilter" (selectionChange)="changeFilter()">
+        <mat-option [value]="undefined">--Нет фильтра--</mat-option>
+        <mat-option [value]="'In progress'">In progress</mat-option>
+        <mat-option [value]="'Done'">Done</mat-option>
+        <mat-option [value]="'Not started'">Not started</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="currentFilterDeadlineStart" (dateChange)="changeFilter()" placeholder="Start date">
+        <input matEndDate (dateChange)="changeFilter()" [(ngModel)]="currentFilterDeadlineEnd" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Исполнители</mat-label>
+      <mat-select multiple [(ngModel)]="currentExecutorsFilter" (selectionChange)="changeFilter()">
+        @for (user of users$ | async; track user) {
+          <mat-option [value]="user.userId">{{user.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="clearFilter()">Сбросить фильтр</button>
+  </div>
+</div>
